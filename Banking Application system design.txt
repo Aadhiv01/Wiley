@@ -1,0 +1,12 @@
+								BANKING APPLICATION
+
+>Building a banking application that allows users to initially create an account where the user inputs the details such as account number, user name, current balance.
+
+>The user should be able to perform account transactions like credit and debit. 
+ While performing debit transactions, the system must ensure that the user's account always maintains a minimum balance.
+
+>For the two transactions, user would be required to input the account number and the amount to be credited/debited.
+
+>The user must also be able to view their transaction history.
+
+>The transaction history displays details such as the type of transaction, amount credited/debited, balance after transaction.
