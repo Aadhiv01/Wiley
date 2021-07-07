@@ -51,17 +51,17 @@ public class Employees extends User{
 		ul.add(new Employees("5","Chen",800,"Banglore","600080","2","Wiley",3000));
 		ul.add(new User("6","Rick"));
 		List<Employees> p1 = ul.stream()
-								.filter(e -> e.getClass().equals(Employees.class))
-								.map(e->(Employees)e)
-								.filter(e->e.project.id.equals("1"))
-								.filter(e->(e.salary<=e.project.budget))
-								.collect(Collectors.toList());
+				       .filter(e -> e.getClass().equals(Employees.class))
+				       .map(e->(Employees)e)
+				       .filter(e->e.project.id.equals("1"))
+			               .filter(e->(e.salary<=e.project.budget))
+				       .collect(Collectors.toList());
 		List<Employees> p2 = ul.stream()
-								.filter(e -> e.getClass().equals(Employees.class))
-								.map(e->(Employees)e)
-								.filter(e->e.project.id.equals("2"))
-								.filter(e->(e.salary<=e.project.budget))
-								.collect(Collectors.toList());
+				       .filter(e -> e.getClass().equals(Employees.class))
+				       .map(e->(Employees)e)
+				       .filter(e->e.project.id.equals("2"))
+				       .filter(e->(e.salary<=e.project.budget))
+				       .collect(Collectors.toList());
 		double b1=p1.get(0).project.budget,b2=p2.get(0).project.budget;
 		int sum1 = (int)p1.stream()
 				  .mapToDouble(e->e.salary)
@@ -73,15 +73,15 @@ public class Employees extends User{
 			Collections.sort(p1,(l1,l2)->(int)(l1.salary-l2.salary));
 			p1.remove(p1.get(0));
 			sum1 = (int)p1.stream()
-					  .mapToDouble(e->e.salary)
-					  .reduce(0,(a, b) -> a+b);
+				      .mapToDouble(e->e.salary)
+				      .reduce(0,(a, b) -> a+b);
 		}
 		while(sum2>b2) {
 			Collections.sort(p2,(l1,l2)->(int)(l1.salary-l2.salary));
 			p2.remove(p2.get(0));
 			sum2 = (int)p2.stream()
-					  .mapToDouble(e->e.salary)
-					  .reduce(0,(a, b) -> a+b);
+				      .mapToDouble(e->e.salary)
+				      .reduce(0,(a, b) -> a+b);
 		}
 		List<Employees> el = new ArrayList<>();
 		el.addAll(p1);
