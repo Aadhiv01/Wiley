@@ -17,7 +17,7 @@ public class Address1 {
 	}
 	@Override
 	public String toString() {
-		return "Address1 [city=" + city + ", zipcode=" + zipcode+"]";
+		return "Address [city=" + city + ", zipcode=" + zipcode+"]";
 	}
 	public static void main(String[] args) {
 		List<User2> ul = new ArrayList<>();
@@ -26,12 +26,11 @@ public class Address1 {
 		ul.add(new User2(3,"User3",Arrays.asList(new Address1("Chennai","600020"),new Address1("Banglore","560001"))));
 		HashMap<Address1,List<User2>> hash = new HashMap<>();
 		for(User2 u : ul) {
-			for(int i=0;i<u.ad.size();i++) {
-				final int x =i;
-				Optional<Address1> a = hash.keySet().stream().filter(s->s.city.equals(u.ad.get(x).city)).findAny();
+			for(Address1 ar : u.ad) {
+				Optional<Address1> a = hash.keySet().stream().filter(s->s.city.equals(ar.city)).findAny();
 				if(!a.isPresent()) {
-					hash.put(new Address1(u.ad.get(i).city,u.ad.get(i).zipcode),new ArrayList<>());
-					a=hash.keySet().stream().filter(s->s.city.equals(u.ad.get(x).city)).findAny();
+					hash.put(new Address1(ar.city,ar.zipcode),new ArrayList<>());
+					a=hash.keySet().stream().filter(s->s.city.equals(ar.city)).findAny();
 				}
 				hash.get(a.get()).add(new User2(u.id,u.name));
 			}
@@ -59,6 +58,6 @@ class User2{
 	}
 	@Override
 	public String toString() {
-		return "User2 [id=" + id + ", name=" + name + "]";
+		return "User [id=" + id + ", name=" + name + "]";
 	}
 }
