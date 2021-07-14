@@ -46,8 +46,9 @@ class Proj{
 
 public class ThreadUser {
 	static List<USER4> ul = Arrays.asList((new USER4(2,"User2",Arrays.asList(new Proj(1,"PR1"),new Proj(2,"PR2")))),(new USER4(1,"User1",Arrays.asList(new Proj(1,"PR1"),new Proj(2,"PR2")))),(new USER4(3,"User3",Arrays.asList(new Proj(2,"PR2"),new Proj(5,"PR5")))));
-	public static void main(String[] args) {
-		UserThread ut = new UserThread(3);
+	public static void main(String[] args) throws InterruptedException {
+		int n = ul.size();
+		UserThread ut = new UserThread(n);
 		Thread t1 = new Thread(ut);
 		Thread t2 = new Thread(ut);
 		t1.setName("Thread 1");
@@ -56,22 +57,27 @@ public class ThreadUser {
 		t2.setPriority(Thread.MIN_PRIORITY);
 		t1.start();
 		t2.start();
-	}
+		Thread.sleep(1000*n+1);
+		ut.getHash().forEach((k,v)->System.out.println(k+" - "+v));
 
+	}
 }
 class UserThread implements Runnable{
-	int n;
-	int x = 0;
-	List<USER4> ul = new ArrayList<>();
-	HashMap<Proj,List<USER4>> hash = new HashMap<>();
+	private int n;
+	private int x = 0;
+	private List<USER4> ul = new ArrayList<>();
+	private HashMap<Proj,List<USER4>> hash = new HashMap<>();
 	Scanner sc = new Scanner(System.in);
 	UserThread(int n){
 		this.n=n;
 	}
 	public void run() {
-		for(int i=0;i<n;i++) {
+		while(true) {
+			if(x==n)
+				return;
 			if(Thread.currentThread().getName().equals("Thread 1")) {
-				ul.add(ThreadUser.ul.get(x));
+				if(ul.size()==x)
+					ul.add(ThreadUser.ul.get(x));
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
@@ -79,27 +85,26 @@ class UserThread implements Runnable{
 				}
 			}
 			else {
+				if(ul.size()==x+1) {
 					for(Proj pr : ul.get(x).pl) {
 						Optional<Proj> a = hash.keySet().stream().filter(s->s.name.equals(pr.name)).findAny();
 						if(!a.isPresent()) {
 							hash.put(new Proj(pr.id,pr.name),new ArrayList<>());
 							a=hash.keySet().stream().filter(s->s.name.equals(pr.name)).findAny();
 						}
-						final int z = x;
-						Optional<USER4> b = hash.get(a.get()).stream().filter(s->s.name.equals(ul.get(z).name)).findAny();
-						if(!b.isPresent())
-							hash.get(a.get()).add(new USER4(ul.get(x).id,ul.get(x).name));
+						hash.get(a.get()).add(new USER4(ul.get(x).id,ul.get(x).name));
 					}
-				
-				if(i==n-1)
-					hash.forEach((k,v)->System.out.println(k+" - "+v));
-				try {
 					x++;
+				}
+				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 		}
+	}
+	public HashMap<Proj, List<USER4>> getHash() {
+		return hash;
 	}
 }
