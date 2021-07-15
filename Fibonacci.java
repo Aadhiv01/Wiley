@@ -52,8 +52,8 @@ class FiboThread implements Runnable{
 							String s = (sum-a)+" + "+a+" = "+(sum);
 							l.add(s);
 							if(l.size()==n) {
-								System.out.println(sum);
 								l.forEach(System.out::println);
+								System.out.println("The sum is : "+sum);
 							}
 						}
 						Thread.sleep(50);
